@@ -7,11 +7,13 @@ import * as path from 'path'
 async function run(): Promise<void> {
   try {
     const context = await getInputs()
-
-    core.info(`cloudflare-utils Version: ${context.version}`)
     const bin = await install(context)
 
     core.addPath(path.dirname(bin))
+
+    core.startGroup('cloudflare-utils version')
+    await exec.exec(bin, ['--version'])
+    core.endGroup()
 
     if (context.args) {
       const full_command = `cloudflare-utils ${context.args}`

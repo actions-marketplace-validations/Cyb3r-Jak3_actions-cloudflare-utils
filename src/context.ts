@@ -1,4 +1,5 @@
 import * as os from 'os'
+import * as semver from 'semver'
 import * as core from '@actions/core'
 import * as github from '@actions/github'
 
@@ -13,8 +14,15 @@ export interface Inputs {
 
 export async function getInputs(): Promise<Inputs> {
   const githubToken = core.getInput('github_token', {required: true})
-  let version = core.getInput('version')
-  if (version && !/^v/.test(version) && version !== 'latest') {
+  // Normalize comma-separated ranges (e.g. '>=1.8.0,<2') to the
+  // space-separated syntax that node-semver expects.
+  let version = core.getInput('version').replace(/,/g, ' ').trim()
+  if (
+    version &&
+    version !== 'latest' &&
+    !/^v/.test(version) &&
+    semver.valid(version)
+  ) {
     version = 'v' + version
   }
   const args = core.getInput('args')
