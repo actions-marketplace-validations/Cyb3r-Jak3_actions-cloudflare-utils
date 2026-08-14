@@ -3,9 +3,8 @@
     "extends": [
         "github>Cyb3r-Jak3/renovate-configs//recommend-extended.json"
     ],
-        
     "constraints": {
-        "pnpm": "^10.0.0"
+        "pnpm": "^11.0.0"
     },
     "lockFileMaintenance": {
         "enabled": true
