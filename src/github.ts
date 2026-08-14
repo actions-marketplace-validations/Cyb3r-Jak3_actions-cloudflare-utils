@@ -1,6 +1,6 @@
 import * as semver from 'semver'
 import {Inputs} from './context.js'
-
+import * as core from '@actions/core'
 export interface GitHubRelease {
   tag_name: string
 }
@@ -52,8 +52,12 @@ export const getReleaseByRange = async (
   if (maxVersion == null) {
     throw new Error(`No release found matching version range ${inputs.version}`)
   }
-
-  return {tag_name: tagsByVersion.get(maxVersion) as string}
+  const tag = tagsByVersion.get(maxVersion)
+  if (tag == null) {
+    throw new Error(`No release found matching version range ${inputs.version}`)
+  }
+  core.info(`Found release ${tag} matching version range ${inputs.version}`)
+  return {tag_name: tag}
 }
 
 export const getLatestRelease = async (
