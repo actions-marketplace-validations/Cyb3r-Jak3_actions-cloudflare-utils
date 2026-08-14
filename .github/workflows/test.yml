@@ -64,5 +64,5 @@ jobs:
       - name: Install of semver range
         uses: ./
         with:
-          version: '>=1.8.0 <2'
+          version: '>=1.8.0,<2'
           github_token: ${{ secrets.GITHUB_TOKEN }}
